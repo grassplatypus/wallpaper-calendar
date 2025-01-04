@@ -18,6 +18,24 @@ const line = computed(() => {
   return props.v!.line
 })
 const type = computed(() => props.v!.shape)
+const textcolor = computed(() => getContrastYIQ(color.value))
+
+// Copilot 코드
+function getContrastYIQ(hexcolor: string): string {
+  // '#' 기호 제거
+  hexcolor = hexcolor.replace('#', '')
+
+  // RGB 값 추출
+  var r = parseInt(hexcolor.slice(0, 2), 16) // 빨간색 값
+  var g = parseInt(hexcolor.slice(2, 4), 16) // 녹색 값
+  var b = parseInt(hexcolor.slice(4, 6), 16) // 파란색 값
+
+  // YIQ 색 공간의 밝기(y) 계산 (공식 그대로 씀)
+  var y = (r * 299 + g * 587 + b * 114) / 1000
+
+  // 밝기가 128 이상이면 검은색 반환, 그렇지 않으면 흰색 반환
+  return y >= 128 ? 'black' : 'white'
+}
 </script>
 
 <template>
@@ -40,6 +58,8 @@ const type = computed(() => props.v!.shape)
   text-align: center;
   position: absolute;
   top: calc(v-bind(line) * 1.5rem + 1.8rem);
+  font-weight: bold;
+  color: v-bind(textcolor);
 }
 
 .event:hover {

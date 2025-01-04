@@ -19,7 +19,7 @@ function msg(mess: string) {
 </script>
 
 <template>
-  <div class="datebox" @click="msg('sex!')">
+  <div class="datebox" @click="msg('yeah!')">
     <div class="day-text">
       <span :class="{ gray: isCurrentMonth, sat: isSat, sun: isSun }">{{ date }}</span>
     </div>

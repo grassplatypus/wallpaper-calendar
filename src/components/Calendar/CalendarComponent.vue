@@ -98,7 +98,7 @@ const event1 = new CEvent('Ev1', 'Ev1', new Date(2024, 10, 13), new Date(2024, 1
 const event2 = new CEvent('Ev2', 'Ev2', new Date(2024, 10, 14), new Date(2024, 11, 1, 23, 59, 59), '', '#d8d817')
 const event3 = new CEvent('Ev3', 'Ev3', new Date(2024, 10, 14), new Date(2024, 10, 14, 23, 59, 59), '', '#0099ff')
 const event4 = new CEvent('Ev4', 'Ev4', new Date(2024, 10, 11), new Date(2024, 10, 13, 23, 59, 59), '', '#ff00b7')
-const event5 = new CEvent('Ev5', 'Ev5', new Date(2024, 10, 10), new Date(2024, 10, 11, 23, 59, 59), '', '#7300ff')
+const event5 = new CEvent('Ev5', 'Ev5', new Date(2024, 10, 10), new Date(2024, 10, 11, 23, 59, 59), '', '#2e055d')
 
 let list = [event1, event2, event3, event5, event4]
 const year = computed(() => {
