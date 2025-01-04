@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>일정 캘린더</title>
+  <style>
+      #calendar {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          gap: 10px;
+      }
+      .day {
+          border: 1px solid #ccc;
+          padding: 5px;
+          position: relative;
+          height: 150px; /* 높이를 auto로 설정 */
+      }
+      .date {
+          font-weight: bold;
+      }
+      .schedules {
+          margin-top: 10px;
+      }
+      .schedule {
+          border-radius: 4px;
+          padding: 5px;
+          font-size: 0.8em;
+          width: 100%;
+          box-sizing: border-box; /* 레이아웃에 영향을 주지 않도록 박스 크기를 조정 */
+          word-wrap: break-word;
+      }
+
+  </style>
+</head>
+<body>
+<h1>일정 캘린더</h1>
+<div id="calendar"></div>
+<script src="calendar.js"></script>
+</body>
+</html>
