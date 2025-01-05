@@ -43,7 +43,7 @@ function getEvents(list: CEvent[], year: number, month: number): Array<CEventUIC
     for (let j = 0; j < eventByWeek.length; j++) {
       let v = eventByWeek[j]
       let [x] = date2XY(v.startDate, year, month)
-      result[x].push(v)
+      if (1 <= x && x <= 6) result[x].push(v)
     }
   }
   return result
@@ -72,8 +72,6 @@ function processEvents(list: CEvent[], year: number, month: number): Array<CEven
         week[event.startDate.getDay() + day]++
       }
       event.line = line
-      console.log(event)
-      console.log(line)
     }
   }
   return eventsByWeek
@@ -81,10 +79,10 @@ function processEvents(list: CEvent[], year: number, month: number): Array<CEven
 
 // 지정된 캘린더 좌표상에 표시될 이벤트를 반환하는 함수
 function getEventOfTheWeek(x: number): CEventUIComponent[] {
-  return eventUI[x]
+  return eventUI.value[x]
 }
 
-// 지정된 날짜에 대해 지정된 년월 캘린더에 어느 좌표에 위치하는지 반환하는 함수
+// 지정된 날짜에 대해 지정된 년월 캘린더에 어느 좌표에 위치하는지 반환하는 함수 (1 <= x, y)
 function date2XY(date: Date, calYear: number, calMonth: number): number[] {
   let FirstDayOfCal = DateFunctions.getFullDate(calYear, calMonth, 1, 1) // 해당 년월 캘린더상 첫 줄 첫 번째 날 날짜 구하기
   date.setHours(0, 0, 0) // 날짜 계산이 달라질 것에 대비하여 시간을 00시 00분으로 표시
@@ -107,7 +105,9 @@ const year = computed(() => {
 const month = computed(() => {
   return props.month!
 })
-let eventUI = processEvents(list, year.value, month.value)
+const eventUI = computed(() => {
+  return processEvents(list, year.value, month.value)
+})
 const getFullDate = DateFunctions.getFullDate
 </script>
 
