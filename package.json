@@ -13,7 +13,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-prettier": "^5.2.1",
+    "pinia": "^2.3.0",
     "vue": "^3.4.21"
   },
   "devDependencies": {
