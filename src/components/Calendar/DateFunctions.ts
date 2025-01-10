@@ -130,12 +130,26 @@ export class DateFunctions {
     return new Date(d.setHours(0, 0, 0, 0))
   }
 
+  // 지정된 년월이 며칠까지 있는지 반환하는 함수 (예: 2월에 28, 12월에 31)
+  // 이 함수는 일반적으로 사용되는 월 숫자를 넣어야 함.
   public static getDaysOfMonth(year: number, month: number) {
     const d = new Date()
     d.setFullYear(year, month - 1, 1)
     const nextMonth = new Date(d.getFullYear(), d.getMonth() + 1, 1)
     return new Date(nextMonth.getTime() - d.getTime()).getDate()
     // Date 간 직접 연산이 안되서 밀리초 변환 이후 연산
+  }
+
+  // 지정된 좌표가 지정된 캘린더 년월상에 들어있는 일(day)인지 반환하는 함수
+  public static isCurrentMonth(year: number, month: number, x: number, y: number): boolean {
+    const startDayOfCal = this.getStartDow(year, month)
+    const d = (x - 1) * 7 + y - 1
+    if (d < startDayOfCal)
+      // 지난 달이다.
+      return false
+    else
+      // 다음 달은 걸러야 함. 월 숫자 보정 (0이 아닌 1부터 시작하는 월)
+      return d < this.getDaysOfMonth(year, month) + startDayOfCal
   }
 
   public static getStartDow(year: number, month: number): number {

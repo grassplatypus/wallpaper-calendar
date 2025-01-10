@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useDateStore } from '@/others/stores'
+import { DateFunctions } from '@/components/Calendar/DateFunctions'
 
 const props = defineProps({
-  fullDate: Date,
-  isCurrentMonth: Boolean
+  x: Number,
+  y: Number
 })
+const dateStore = useDateStore()
+const dateOfThisBox = computed(() => DateFunctions.getFullDate(dateStore.year, dateStore.month, props.x!, props.y!))
 
-const isSat = computed(() => props.fullDate!.getDay() == 6)
-const isSun = computed(() => props.fullDate!.getDay() == 0)
-const year = computed(() => props.fullDate!.getFullYear())
-const month = computed(() => props.fullDate!.getMonth())
-const date = computed(() => props.fullDate!.getDate())
-const isCurrentMonth = computed(() => props.isCurrentMonth!)
+const isSat = computed(() => dateOfThisBox!.value.getDay() == 6)
+const isSun = computed(() => dateOfThisBox!.value.getDay() == 0)
+// dateOfThisBox를 쓰면 캘린더에서 메인이 되는 월이 아닌 해당 날짜 기준 월이 사용되어 문제 발생
+const year = computed(() => dateStore.year)
+const month = computed(() => dateStore.month) // 실제 우리가 쓰는 월
+const boxDate = computed(() => dateOfThisBox!.value.getDate())
+const boxMonth = computed(() => dateOfThisBox!.value.getMonth() + 1) // 실제 박스의 월 (+1해서 표시)
+const isCurrentMonth = computed(() => DateFunctions.isCurrentMonth(year.value, month.value, props.x!, props.y!))
 
 function msg(mess: string) {
   alert(mess)
@@ -21,7 +27,8 @@ function msg(mess: string) {
 <template>
   <div class="datebox" @click="msg('yeah!')">
     <div class="day-text">
-      <span :class="{ gray: isCurrentMonth, sat: isSat, sun: isSun }">{{ date }}</span>
+      <span v-if="isCurrentMonth" :class="{ sat: isSat, sun: isSun }">{{ boxDate }}</span>
+      <span v-else class="gray" :class="{ sat: isSat, sun: isSun }">{{ boxMonth }}/{{ boxDate }}</span>
     </div>
   </div>
 </template>
@@ -31,11 +38,6 @@ function msg(mess: string) {
   width: 8rem;
   height: 8.5rem;
   position: relative;
-  transition-duration: 0.07s;
-}
-
-.datebox:hover {
-  background: lightgray;
 }
 
 .day-text {
@@ -49,7 +51,7 @@ function msg(mess: string) {
 }
 
 .day-text:deep(.gray) {
-  color: gray !important;
+  color: gray;
   font-weight: normal;
 }
 

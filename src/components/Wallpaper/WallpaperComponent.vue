@@ -24,7 +24,7 @@
   position: absolute;
   background: white;
   z-index: -1;
-  opacity: 0.4;
+  opacity: 0.8;
   inset: 0;
 }
 

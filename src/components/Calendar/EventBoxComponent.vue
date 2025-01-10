@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import EventComponent from '@/components/Calendar/EventComponent.vue'
 import { computed } from 'vue'
-import { CEventUIComponent } from '@/components/Calendar/EventProvider.js'
+import { useDateStore } from '@/others/stores'
+import { EventFunctions } from '@/components/Calendar/EventFunctions'
+import { Example } from '@/test/example'
 
 const props = defineProps({
-  fullDate: Date,
-  event: Array<CEventUIComponent>
+  x: Number
 })
+const dateStore = useDateStore()
 
-const isSat = computed(() => props.fullDate!.getDay() == 6)
-const isSun = computed(() => props.fullDate!.getDay() == 0)
-const year = computed(() => props.fullDate!.getFullYear())
-const month = computed(() => props.fullDate!.getMonth())
-const date = computed(() => props.fullDate!.getDate())
+const eventsByWeek = computed(() => {
+  return EventFunctions.processEvents(Example.testEvents, dateStore.year, dateStore.month)
+})
+const eventsOfTheWeek = computed(() => EventFunctions.getEventOfTheWeek(eventsByWeek.value, props.x!))
 
 function msg(mess: string) {
   alert(mess)
@@ -21,7 +22,7 @@ function msg(mess: string) {
 
 <template>
   <div class="event-box">
-    <event-component @click.stop="msg('watch out')" v-for="v in props.event" :key="v.id" :v="v" />
+    <event-component @click.stop="msg('watch out')" v-for="v in eventsOfTheWeek" :key="v.id" :v="v" />
   </div>
 </template>
 

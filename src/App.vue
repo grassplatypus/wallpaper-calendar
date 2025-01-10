@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import Calendar from '@/components/Calendar/CalendarComponent.vue'
 import { computed, watch } from 'vue'
-import Wallpaper from '@/components/Wallpaper/WallpaperComponent.vue'
 import { useDateStore, useWallpaperStore } from '@/others/stores'
+import Calendar from '@/components/Calendar/CalendarComponent.vue'
+import Wallpaper from '@/components/Wallpaper/WallpaperComponent.vue'
+
+const dateStore = useDateStore()
+const wallpaperStore = useWallpaperStore()
 
 const year = computed(() => {
   return dateStore.year
@@ -10,9 +13,6 @@ const year = computed(() => {
 const month = computed(() => {
   return dateStore.month
 })
-
-const dateStore = useDateStore()
-const wallpaperStore = useWallpaperStore()
 
 function init() {
   // 애플리케이션 시작 시 localStorage에서 상태 복원
@@ -31,17 +31,16 @@ function init() {
   )
 
   dateStore.year = 2024
-  dateStore.month = 10
+  dateStore.month = 11
   dateStore.day = 1
 }
-function loadData() {}
 
 init()
 </script>
 
 <template>
   <Wallpaper>
-    <Calendar :year="year" :month="month" />
+    <Calendar />
     <div>
       <p>Year</p>
       <input type="number" v-model="dateStore.year" />
