@@ -1,44 +1,42 @@
-<script setup>
+<script setup lang="ts">
 import Calendar from '@/components/Calendar/CalendarComponent.vue'
-import { ref } from 'vue'
+import { computed, watch } from 'vue'
 import Wallpaper from '@/components/Wallpaper/WallpaperComponent.vue'
-import { defineStore } from 'pinia'
-import {WallpaperSettings} from '@/others/defines.js'
-import { watch } from 'node:fs'
+import { useDateStore, useWallpaperStore } from '@/others/stores'
 
-const year = ref(2024)
-const month = ref(11)
-
-const wallpaperStore = defineStore('wallpaper-store', {
-  state: (): WallpaperSettings => {
-    return {
-      // 시계 설정
-      clockSettings: null,
-      // 캘린더 설정
-      calendarSettings: null,
-    }
-  }
+const year = computed(() => {
+  return dateStore.year
+})
+const month = computed(() => {
+  return dateStore.month
 })
 
-// Copilot
-// 애플리케이션 시작 시 localStorage에서 상태 복원
-const savedState = localStorage.getItem('wallpaper-store')
-if (savedState) {
-  wallpaperStore.$state = JSON.parse(savedState)
+const dateStore = useDateStore()
+const wallpaperStore = useWallpaperStore()
+
+function init() {
+  // 애플리케이션 시작 시 localStorage에서 상태 복원
+  const savedState = localStorage.getItem('wallpaper-store')
+  if (savedState) {
+    wallpaperStore.$state = JSON.parse(savedState)
+  }
+  // Copilot
+  // 상태 변경 시마다 localStorage에 저장
+  watch(
+    () => wallpaperStore.$state,
+    (state) => {
+      localStorage.setItem('wallpaper-store', JSON.stringify(state))
+    },
+    { deep: true } // 깊은 감시를 위해 설정
+  )
+
+  dateStore.year = 2024
+  dateStore.month = 10
+  dateStore.day = 1
 }
+function loadData() {}
 
-// 상태 변경 시마다 localStorage에 저장
-watch(
-  () => mainStore.$state,
-  (state) => {
-    localStorage.setItem('wallpaper-store', JSON.stringify(state))
-  },
-  { deep: true }  // 깊은 감시를 위해 설정
-)
-
-function loadData() {
-
-}
+init()
 </script>
 
 <template>
@@ -46,10 +44,10 @@ function loadData() {
     <Calendar :year="year" :month="month" />
     <div>
       <p>Year</p>
-      <input type="number" v-model="year" />
+      <input type="number" v-model="dateStore.year" />
 
       <p>Month</p>
-      <input type="number" v-model="month" />
+      <input type="number" v-model="dateStore.month" />
     </div>
   </Wallpaper>
 </template>
