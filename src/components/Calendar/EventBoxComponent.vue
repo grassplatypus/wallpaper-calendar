@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import EventComponent from '@/components/Calendar/EventComponent.vue'
 import { computed } from 'vue'
-import { useDateStore } from '@/others/stores'
+import { useDateStore, useWallpaperStore } from '@/others/stores'
 import { EventFunctions } from '@/components/Calendar/EventFunctions'
 import { Example } from '@/test/example'
+import '@/others/variables.css'
+
+const dateStore = useDateStore()
+const wallpaperStore = useWallpaperStore()
+const size = computed(() => wallpaperStore.calendarSettings!.size)
 
 const props = defineProps({
   x: Number
 })
-const dateStore = useDateStore()
-
 const eventsByWeek = computed(() => {
   return EventFunctions.processEvents(Example.testEvents, dateStore.year, dateStore.month)
 })
@@ -28,9 +31,9 @@ function msg(mess: string) {
 
 <style scoped>
 .event-box {
-  width: 8rem;
-  height: 8.5rem;
+  width: calc(var(--calendar-box-width) * v-bind(size));
+  height: calc(var(--calendar-box-height) * v-bind(size));
   position: relative;
-  padding: 1.6rem 0 0;
+  /* padding: 1.6rem 0 0; */
 }
 </style>

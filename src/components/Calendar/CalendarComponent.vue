@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import DateBoxComponent from '@/components/Calendar/DateBoxComponent.vue'
 import EventBoxComponent from '@/components/Calendar/EventBoxComponent.vue'
+import { useWallpaperStore } from '@/others/stores'
+import { computed } from 'vue'
+import '@/others/variables.css'
+const wallpaperStore = useWallpaperStore()
+const size = computed(() => wallpaperStore.calendarSettings!.size)
 </script>
 
 <template>
@@ -67,8 +72,14 @@ import EventBoxComponent from '@/components/Calendar/EventBoxComponent.vue'
 
 .calendar-container {
   position: relative;
-  width: calc(8.05rem * 7 + 0.05rem);
-  height: calc(8.55rem * 6 + 0.05rem);
+  width: calc(
+    calc(calc(var(--calendar-box-width) * v-bind(size)) + var(--calendar-border-thickness)) * 7 +
+      var(--calendar-border-thickness)
+  );
+  height: calc(
+    calc(calc(var(--calendar-box-height) * v-bind(size)) + var(--calendar-border-thickness)) * 6 +
+      var(--calendar-border-thickness)
+  );
 }
 
 .hidden {
@@ -76,45 +87,44 @@ import EventBoxComponent from '@/components/Calendar/EventBoxComponent.vue'
 }
 
 .table-box-container {
-  width: 8rem;
-  height: 8.5rem;
+  width: calc(var(--calendar-box-width) * v-bind(size));
+  height: calc(var(--calendar-box-height) * v-bind(size));
   padding: 0;
 }
 
 .table-box {
   width: 100%;
   height: 100%;
-  padding: 0;
-  border-right: 0.05rem solid gray;
-  border-top: 0.05rem solid gray;
-  transition-duration: 0.07s;
+  border-right: var(--calendar-border-thickness) solid var(--calendar-border-color);
+  border-top: var(--calendar-border-thickness) solid var(--calendar-border-color);
+  transition-duration: var(--calendar-box-transition-duration);
 }
 
 .table-box:hover {
-  background: red;
+  background: var(--calendar-box-hover-color);
 }
 
 .left-first-border {
-  border-left: 0.05rem solid gray;
+  border-left: var(--calendar-border-thickness) solid var(--calendar-border-color);
 }
 
 .bottom-last-border {
-  border-bottom: 0.05rem solid gray;
+  border-bottom: var(--calendar-border-thickness) solid var(--calendar-border-color);
 }
 
 .left-top-radius {
-  border-top-left-radius: 10%;
+  border-top-left-radius: var(--calendar-border-radius);
 }
 
 .left-bottom-radius {
-  border-bottom-left-radius: 10%;
+  border-bottom-left-radius: var(--calendar-border-radius);
 }
 
 .right-bottom-radius {
-  border-bottom-right-radius: 10%;
+  border-bottom-right-radius: var(--calendar-border-radius);
 }
 
 .right-top-radius {
-  border-top-right-radius: 10%;
+  border-top-right-radius: var(--calendar-border-radius);
 }
 </style>

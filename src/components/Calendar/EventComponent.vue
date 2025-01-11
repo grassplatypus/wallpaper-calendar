@@ -1,17 +1,26 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { CEventUIComponent } from '@/components/Calendar/EventProvider.js'
+import { useWallpaperStore } from '@/others/stores'
+import '@/others/variables.css'
+import { useCssVar } from '@vueuse/core'
 
 const props = defineProps({
   v: CEventUIComponent
 })
 
+let boxWidth = Number(useCssVar('--calendar-box-width', ref(null)).value!.slice(0, -3))
+let boxHeight = Number(useCssVar('--calendar-box-height', ref(null)).value!.slice(0, -3))
+let borderThickness = Number(useCssVar('--calendar-border-thickness', ref(null)).value!.slice(0, -3))
+
+const wallpaperStore = useWallpaperStore()
+const size = computed(() => wallpaperStore.calendarSettings!.size)
 const color = computed(() => props.v!.color)
 const name = computed(() => props.v!.name)
-const size = computed(() => props.v!.days)
+const days = computed(() => props.v!.days)
 const offset = computed(() => {
   let day = props.v!.startDate.getDay()
-  if (day) return day * 8.05 + 0.05
+  if (day) return day * (boxWidth * size.value + borderThickness) + borderThickness
   else return 0
 })
 const line = computed(() => {
@@ -46,18 +55,21 @@ function getContrastYIQ(hexcolor: string): string {
 
 <style scoped>
 .event {
-  font-size: 0.8rem;
+  font-size: calc(0.8rem * v-bind(size));
   margin-bottom: 0.08rem;
   border: 1px solid v-bind(color);
   background-color: v-bind(color);
-  width: calc(v-bind(size) * 8.05rem - 0.05rem);
+  width: calc(
+    v-bind(days) * (var(--calendar-box-width) * v-bind(size) + var(--calendar-border-thickness)) -
+      var(--calendar-border-thickness)
+  );
   margin-left: calc(v-bind(offset) * 1rem);
-  transition-duration: 0.3s;
+  transition-duration: var(--calendar-event-transition-duration);
   pointer-events: all;
   cursor: pointer;
   text-align: center;
   position: absolute;
-  top: calc(v-bind(line) * 1.5rem + 1.8rem);
+  top: calc((v-bind(line) * 1.5rem) * v-bind(size) + 1.8rem);
   font-weight: bold;
   color: v-bind(textcolor);
 }

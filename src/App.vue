@@ -3,6 +3,8 @@ import { computed, watch } from 'vue'
 import { useDateStore, useWallpaperStore } from '@/others/stores'
 import Calendar from '@/components/Calendar/CalendarComponent.vue'
 import Wallpaper from '@/components/Wallpaper/WallpaperComponent.vue'
+import Clock from '@/components/Clock/ClockComponent.vue'
+import { calendarSettingsObj, clockSettingsObj } from '@/others/defines'
 
 const dateStore = useDateStore()
 const wallpaperStore = useWallpaperStore()
@@ -19,6 +21,9 @@ function init() {
   const savedState = localStorage.getItem('wallpaper-store')
   if (savedState) {
     wallpaperStore.$state = JSON.parse(savedState)
+  } else {
+    wallpaperStore.clockSettings = new clockSettingsObj()
+    wallpaperStore.calendarSettings = new calendarSettingsObj()
   }
   // Copilot
   // 상태 변경 시마다 localStorage에 저장
@@ -33,6 +38,7 @@ function init() {
   dateStore.year = 2024
   dateStore.month = 11
   dateStore.day = 1
+  wallpaperStore.clockSettings.time24 = true
 }
 
 init()
@@ -48,6 +54,7 @@ init()
       <p>Month</p>
       <input type="number" v-model="dateStore.month" />
     </div>
+    <Clock />
   </Wallpaper>
 </template>
 

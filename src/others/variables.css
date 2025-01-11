@@ -1,0 +1,17 @@
+:root {
+    --calendar-box-width: 8rem;
+    --calendar-box-height: 8.5rem;
+    --calendar-border-thickness: 0.05rem;
+    --calendar-border-color: black;
+    --calendar-box-hover-color: blue;
+    --calendar-box-transition-duration: 0.07s;
+    --calendar-border-radius: 10%;
+
+    --calendar-box-text-padding: 0.1rem 0.3rem 0 0;
+    --calendar-box-text-size: 1.1rem;
+    --calendar-box-not-current-month-color: gray;
+    --calendar-box-sat-color: deepskyblue;
+    --calendar-box-sun-color: orangered;
+
+    --calendar-event-transition-duration: 0.3s;
+}

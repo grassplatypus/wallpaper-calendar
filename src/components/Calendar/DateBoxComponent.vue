@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useDateStore } from '@/others/stores'
+import { useDateStore, useWallpaperStore } from '@/others/stores'
 import { DateFunctions } from '@/components/Calendar/DateFunctions'
+import '@/others/variables.css'
 
 const props = defineProps({
   x: Number,
@@ -25,41 +26,33 @@ function msg(mess: string) {
 </script>
 
 <template>
-  <div class="datebox" @click="msg('yeah!')">
-    <div class="day-text">
-      <span v-if="isCurrentMonth" :class="{ sat: isSat, sun: isSun }">{{ boxDate }}</span>
-      <span v-else class="gray" :class="{ sat: isSat, sun: isSun }">{{ boxMonth }}/{{ boxDate }}</span>
-    </div>
+  <div class="day-text" @click="msg('yeah!')">
+    <span v-if="isCurrentMonth" :class="{ sat: isSat, sun: isSun }">{{ boxDate }}</span>
+    <span v-else class="gray" :class="{ sat: isSat, sun: isSun }">{{ boxMonth }}/{{ boxDate }}</span>
   </div>
 </template>
 
 <style scoped>
-.datebox {
-  width: 8rem;
-  height: 8.5rem;
-  position: relative;
-}
-
 .day-text {
-  padding: 0 0.3rem 0 0;
+  padding: var(--calendar-box-text-padding);
   text-align: right;
 }
 
 .day-text:deep(span) {
-  font-size: 1.1rem;
+  font-size: var(--calendar-box-text-size);
   font-weight: bold;
 }
 
 .day-text:deep(.gray) {
-  color: gray;
+  color: var(--calendar-box-not-current-month-color);
   font-weight: normal;
 }
 
 .day-text:deep(.sat) {
-  color: deepskyblue;
+  color: var(--calendar-box-sat-color);
 }
 
 .day-text:deep(.sun) {
-  color: orangered;
+  color: var(--calendar-box-sun-color);
 }
 </style>

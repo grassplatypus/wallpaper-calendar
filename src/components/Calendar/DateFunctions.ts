@@ -31,7 +31,6 @@ export class DateFunctions {
       endDate = endDayOfCal
       calEndOverflow = true
     }
-    console.log(event.endDate)
 
     let startWeek = 1,
       endWeek = 1
