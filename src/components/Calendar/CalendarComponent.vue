@@ -76,12 +76,14 @@ import EventBoxComponent from '@/components/Calendar/EventBoxComponent.vue'
 }
 
 .table-box-container {
+  width: 8rem;
+  height: 8.5rem;
   padding: 0;
 }
 
 .table-box {
-  width: 8rem;
-  height: 8.5rem;
+  width: 100%;
+  height: 100%;
   padding: 0;
   border-right: 0.05rem solid gray;
   border-top: 0.05rem solid gray;
